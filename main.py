@@ -10,6 +10,8 @@ def check_user(name, password):
         return True
     return False
 
+def get_info(day, place):
+    return render_template('info.html', title='Большой бассейн')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'her_vam_a_ne_kluch'
@@ -23,9 +25,9 @@ def start():
 def pool_large():
     return render_template('large_pool.html', title='Большой бассейн')
 
-@app.route('/ice')
-def ice():
-    return render_template('ice.html', title='Ледовая арена')
+@app.route('/monday-large-pool')
+def pool_large1():
+    return get_info('monday', 'large-pool')
 
 @app.route('/index')
 def index():

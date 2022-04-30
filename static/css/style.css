@@ -1,5 +1,4 @@
 .cont {
-    background-color: white;
     padding: 0px 50px 50px 50px;
 }
 body {
@@ -18,6 +17,24 @@ body {
 }
 img {
 	border: 0;
+}
+
+ul.hr {
+    margin: 0; /* Обнуляем значение отступов */
+    padding: 4px; /* Значение полей */
+    text-align: center;
+ }
+ul.hr li {
+    display: inline; /* Отображать как строчный элемент */
+    margin-right: 5px; /* Отступ слева */
+    border: 1px solid #000; /* Рамка вокруг текста */
+    padding: 3px; /* Поля вокруг текста */
+}
+
+#shed {
+background-color: white;
+	max-width: 960px;
+	margin: auto;
 }
 
 input[type="text"] {
