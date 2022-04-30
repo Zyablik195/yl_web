@@ -11,7 +11,9 @@ def check_user(name, password):
     return False
 
 def get_info(day, place):
-    return render_template('info.html', title='Большой бассейн')
+    images_dick = {'large-pool': 'large-pool.png'}
+    image = './static/images/' + images_dick[place]
+    return render_template('info.html', title='Большой бассейн', day=day, place=place, image=image)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'her_vam_a_ne_kluch'
@@ -21,6 +23,7 @@ db_sess = 0
 def start():
     return render_template('test.html', title='Главная страница')
 
+########################################################################################################################
 @app.route('/large-pool')
 def pool_large():
     return render_template('large_pool.html', title='Большой бассейн')
@@ -28,6 +31,37 @@ def pool_large():
 @app.route('/monday-large-pool')
 def pool_large1():
     return get_info('monday', 'large-pool')
+
+@app.route('/tuesday-large-pool')
+def pool_large2():
+    return get_info('tuesday', 'large-pool')
+
+@app.route('/wednesday-large-pool')
+def pool_large3():
+    return get_info('wednesday', 'large-pool')
+
+@app.route('/thursday-large-pool')
+def pool_large4():
+    return get_info('thursday', 'large-pool')
+
+@app.route('/friday-large-pool')
+def pool_large5():
+    return get_info('friday', 'large-pool')
+
+@app.route('/saturday-large-pool')
+def pool_large6():
+    return get_info('saturday', 'large-pool')
+
+@app.route('/sunday-large-pool')
+def pool_large7():
+    return get_info('sunday', 'large-pool')
+
+@app.route('/7')
+def time7():
+    return get_info('sunday', 'large-pool')
+
+
+########################################################################################################################
 
 @app.route('/index')
 def index():
