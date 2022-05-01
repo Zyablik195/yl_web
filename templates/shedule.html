@@ -29,16 +29,21 @@
 			</div>
 
 		</div>
+		<ul class="hr">
+   			<li><a href="/monday">ПОНЕДЕЛЬНИК</a></li>
+   			<li><a href="/tuesday">ВТОРНИК</a></li>
+			<li><a href="/wednesday">СРЕДА</a></li>
+   			<li><a href="/thursday">ЧЕТВЕРГ</a></li>
+   			<li><a href="/friday">ПЯТНИЦА</a></li>
+			<li><a href="/saturday">СУББОТА</a></li>
+			<li><a href="/sunday">ВОСКРЕСЕНЬЕ</a></li>
+  		</ul>
 
 		<section class="shedule" id="shed">
-				<img src={{image}} alt="Расписание" width="280" height="210">
-				<h3>{{name}} {{day_of_the_week}} {{time}}</h3>
-				<h2>{{count_already}}/{{count_max}} мест уже занято.</h2>
-				  {% if can_write == 1 %}
-			<p><a href="/write">Записаться</a></p>
-  {% endif %}
+				<img src={{image}} alt="Расписание">
 		</section>
 	</container>
+
 </body>
 	<footer>
 		<div id="footer">

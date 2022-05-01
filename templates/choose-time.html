@@ -29,16 +29,22 @@
 			</div>
 
 		</div>
+				<ul class="hr">
+   			<li><a href="/8">08:00</a></li>
+   			<li><a href="/9">09:00</a></li>
+			<li><a href="/10">10:00</a></li>
+					<li><a href="/11">11:00</a></li>
+					<li><a href="/12">12:00</a></li>
+					<li><a href="/20">20:00</a></li>
+					<li><a href="/21">21:00</a></li>
+  		</ul>
 
 		<section class="shedule" id="shed">
-				<img src={{image}} alt="Расписание" width="280" height="210">
-				<h3>{{name}} {{day_of_the_week}} {{time}}</h3>
-				<h2>{{count_already}}/{{count_max}} мест уже занято.</h2>
-				  {% if can_write == 1 %}
-			<p><a href="/write">Записаться</a></p>
-  {% endif %}
+				<img src="./static/images/shedule_large_pool.png" alt="Расписание">
 		</section>
+
 	</container>
+
 </body>
 	<footer>
 		<div id="footer">

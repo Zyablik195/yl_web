@@ -1,8 +1,10 @@
 from flask import Flask
 from data import db_session
 from data.users import User
+from data.jobs import Job
 from flask import url_for, request, render_template, redirect
 from data.forms import *
+
 
 def check_user(name, password):
     user = db_sess.query(User).filter(name == User.email).first()
@@ -10,55 +12,117 @@ def check_user(name, password):
         return True
     return False
 
-def get_info(day, place):
-    images_dick = {'large-pool': 'large-pool.png'}
-    image = './static/images/' + images_dick[place]
-    return render_template('info.html', title='Большой бассейн', day=day, place=place, image=image)
+
+def get_info():
+    global db_sess
+    images_dick = {'large-pool': ['large-pool.png', 'Большой бассейн']}
+    days = {'monday': 'Понедельник'}
+    image, russian_name = './static/images/' + images_dick[place][0], images_dick[place][1]
+    print(place, day, time)
+    jobs = db_sess.query(Job).filter(place == Job.place).all()
+    for job in jobs:
+        if job.time == time.split(':')[0] and job.day == day:
+            break
+    count_already = job.already
+    count_max = job.max
+    can_write = 1 if count_already < count_max else 0
+    return render_template('info.html', title='Большой бассейн', can_write=can_write, day_of_the_week=days[day], name=russian_name, time=time, day=day, place=place, image=image, count_already=count_already, count_max=count_max)
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'her_vam_a_ne_kluch'
 db_sess = 0
+place = 'large-pool'
+day = 'monday'
+time = '7:00'
+
 
 @app.route('/')
 def start():
     return render_template('test.html', title='Главная страница')
 
+@app.route('/write')
+def write():
+    return render_template('write.html', title='Вы записаны')
 ########################################################################################################################
+def shedule():
+    dick = {'large-pool': 'Большой бассейн', 'ice': 'Ледовая арена'}
+    image_path = f"./static/images/shedule_{place.replace('-', '_')}.png"
+    return render_template('shedule.html', title=dick[place], image=image_path)
+
 @app.route('/large-pool')
-def pool_large():
-    return render_template('large_pool.html', title='Большой бассейн')
+def place1():
+    global place
+    place = 'large-pool'
+    return shedule()
 
-@app.route('/monday-large-pool')
-def pool_large1():
-    return get_info('monday', 'large-pool')
 
-@app.route('/tuesday-large-pool')
-def pool_large2():
-    return get_info('tuesday', 'large-pool')
+@app.route('/ice')
+def place2():
+    global place
+    place = 'ice'
+    return shedule()
 
-@app.route('/wednesday-large-pool')
-def pool_large3():
-    return get_info('wednesday', 'large-pool')
 
-@app.route('/thursday-large-pool')
-def pool_large4():
-    return get_info('thursday', 'large-pool')
+@app.route('/monday')
+def day1():
+    global day
+    day = 'monday'
+    return render_template('choose-time.html', title='Время записи')
 
-@app.route('/friday-large-pool')
-def pool_large5():
-    return get_info('friday', 'large-pool')
 
-@app.route('/saturday-large-pool')
-def pool_large6():
-    return get_info('saturday', 'large-pool')
+@app.route('/tuesday')
+def day2():
+    global day
+    day = 'tuesday'
+    return render_template('choose-time.html', title='Время записи')
 
-@app.route('/sunday-large-pool')
-def pool_large7():
-    return get_info('sunday', 'large-pool')
 
-@app.route('/7')
-def time7():
-    return get_info('sunday', 'large-pool')
+@app.route('/wednesday')
+def day3():
+    global day
+    day = 'wednesday'
+    return render_template('choose-time.html', title='Время записи')
+
+
+@app.route('/thursday')
+def day4():
+    global day
+    day = 'thursday'
+    return render_template('choose-time.html', title='Время записи')
+
+
+@app.route('/friday')
+def day5():
+    global day
+    day = 'friday'
+    return render_template('choose-time.html', title='Время записи')
+
+
+@app.route('/saturday')
+def day6():
+    global day
+    day = 'saturday'
+    return render_template('choose-time.html', title='Время записи')
+
+
+@app.route('/sunday')
+def day7():
+    global day
+    day = 'sunday'
+    return render_template('choose-time.html', title='Время записи')
+
+@app.route('/8')
+def time8():
+    global time
+    time = '8:00'
+    return get_info()
+
+@app.route('/9')
+def time9():
+    global time
+    time = '9:00'
+    return get_info()
 
 
 ########################################################################################################################
@@ -253,6 +317,21 @@ def main():
     for user in db_sess.query(User).all():
         print(user.name)
 
+    '''
+    for i in ['ice', 'large-pool', 'gym', 'universal']:
+        for k in [8, 9, 10, 11, 12, 20, 21]:
+            for j in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']:
+                job = Job()
+                job.place, job.day, job.time, job.already, job.max = i, j, k, 0, 12
+                db_sess.add(job)
+                
+                user = User()
+                user.email = "aue2005@mars.org"
+                user.hashed_password = "1234"
+                db_sess.add(user)
+                
+    db_sess.commit()
+    '''
     '''
     job = Jobs()
     job.team_leader = 1
