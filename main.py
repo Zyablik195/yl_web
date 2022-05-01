@@ -1,3 +1,5 @@
+import random
+
 from flask import Flask
 from data import db_session
 from data.users import User
@@ -15,8 +17,9 @@ def check_user(name, password):
 
 def get_info():
     global db_sess
-    images_dick = {'large-pool': ['large-pool.png', 'Большой бассейн']}
-    days = {'monday': 'Понедельник'}
+    images_dick = {'large-pool': ['large-pool.png', 'Большой бассейн'], 'ice-area': ['ice-area.png', 'Ледовая арена'], 'gym': ['gym.png', 'Тренажёрный зал']}
+    days = {'monday': 'Понедельник', 'tuesday': 'Вторник', 'wednesday': 'Среда', 'thursday': 'Четверг',
+    'friday': 'Пятница', 'saturday': 'Суббота', 'sunday': 'Воскресенье'}
     image, russian_name = './static/images/' + images_dick[place][0], images_dick[place][1]
     print(place, day, time)
     jobs = db_sess.query(Job).filter(place == Job.place).all()
@@ -26,7 +29,7 @@ def get_info():
     count_already = job.already
     count_max = job.max
     can_write = 1 if count_already < count_max else 0
-    return render_template('info.html', title='Большой бассейн', can_write=can_write, day_of_the_week=days[day], name=russian_name, time=time, day=day, place=place, image=image, count_already=count_already, count_max=count_max)
+    return render_template('info.html', title=russian_name, can_write=can_write, day_of_the_week=days[day], name=russian_name, time=time, day=day, place=place, image=image, count_already=count_already, count_max=count_max)
 
 
 app = Flask(__name__)
@@ -41,14 +44,41 @@ time = '7:00'
 def start():
     return render_template('test.html', title='Главная страница')
 
+
 @app.route('/write')
 def write():
-    return render_template('write.html', title='Вы записаны')
+    global db_sess
+    images_dick = {'large-pool': ['large-pool.png', 'Большой бассейн'], 'ice-area': ['ice-area.png', 'Ледовая арена'],
+                   'gym': ['gym.png', 'Тренажёрный зал']}
+    days = {'monday': 'Понедельник', 'tuesday': 'Вторник', 'wednesday': 'Среда', 'thursday': 'Четверг',
+            'friday': 'Пятница', 'saturday': 'Суббота', 'sunday': 'Воскресенье'}
+    b = []
+    for i in db_sess.query(User).filter(User.id > 0).all():
+        b.append(i.code)
+    while True:
+        number = f'{random.randint(100, 999)}-{random.randint(100, 999)}'
+        if number not in b:
+            break
+    jobs = db_sess.query(Job).filter(place == Job.place).all()
+    for job in jobs:
+        if job.time == time.split(':')[0] and job.day == day:
+            break
+    job.already = job.already + 1
+    user = User()
+    user.job_id = job.id
+    user.code = number
+    user.job = job
+    db_sess.add(user)
+    db_sess.commit()
+    return render_template('write.html', title='Вы записаны', day=days[day], place=images_dick[place][1], time=time, number=number)
 ########################################################################################################################
+
+
 def shedule():
-    dick = {'large-pool': 'Большой бассейн', 'ice': 'Ледовая арена'}
+    dick = {'large-pool': 'Большой бассейн', 'ice-area': 'Ледовая арена', 'gym': 'Тренажёрный зал'}
     image_path = f"./static/images/shedule_{place.replace('-', '_')}.png"
     return render_template('shedule.html', title=dick[place], image=image_path)
+
 
 @app.route('/large-pool')
 def place1():
@@ -57,10 +87,17 @@ def place1():
     return shedule()
 
 
-@app.route('/ice')
+@app.route('/ice-area')
 def place2():
     global place
-    place = 'ice'
+    place = 'ice-area'
+    return shedule()
+
+
+@app.route('/gym')
+def place3():
+    global place
+    place = 'gym'
     return shedule()
 
 
@@ -68,55 +105,64 @@ def place2():
 def day1():
     global day
     day = 'monday'
-    return render_template('choose-time.html', title='Время записи')
+    image_path = f"./static/images/shedule_{place.replace('-', '_')}.png"
+    return render_template('choose-time.html', title='Время записи', image=image_path)
 
 
 @app.route('/tuesday')
 def day2():
     global day
     day = 'tuesday'
-    return render_template('choose-time.html', title='Время записи')
+    image_path = f"./static/images/shedule_{place.replace('-', '_')}.png"
+    return render_template('choose-time.html', title='Время записи', image=image_path)
 
 
 @app.route('/wednesday')
 def day3():
     global day
     day = 'wednesday'
-    return render_template('choose-time.html', title='Время записи')
+    image_path = f"./static/images/shedule_{place.replace('-', '_')}.png"
+    return render_template('choose-time.html', title='Время записи', image=image_path)
 
 
 @app.route('/thursday')
 def day4():
     global day
     day = 'thursday'
-    return render_template('choose-time.html', title='Время записи')
+    image_path = f"./static/images/shedule_{place.replace('-', '_')}.png"
+    return render_template('choose-time.html', title='Время записи', image=image_path)
 
 
 @app.route('/friday')
 def day5():
     global day
     day = 'friday'
-    return render_template('choose-time.html', title='Время записи')
+    image_path = f"./static/images/shedule_{place.replace('-', '_')}.png"
+    return render_template('choose-time.html', title='Время записи', image=image_path)
 
 
 @app.route('/saturday')
 def day6():
     global day
     day = 'saturday'
-    return render_template('choose-time.html', title='Время записи')
+    image_path = f"./static/images/shedule_{place.replace('-', '_')}.png"
+    return render_template('choose-time.html', title='Время записи', image=image_path)
 
 
 @app.route('/sunday')
 def day7():
     global day
     day = 'sunday'
-    return render_template('choose-time.html', title='Время записи')
+    image_path = f"./static/images/shedule_{place.replace('-', '_')}.png"
+    return render_template('choose-time.html', title='Время записи', image=image_path)
+
 
 @app.route('/8')
 def time8():
     global time
     time = '8:00'
     return get_info()
+
 
 @app.route('/9')
 def time9():
@@ -125,6 +171,39 @@ def time9():
     return get_info()
 
 
+@app.route('/10')
+def time10():
+    global time
+    time = '10:00'
+    return get_info()
+
+
+@app.route('/11')
+def time11():
+    global time
+    time = '11:00'
+    return get_info()
+
+
+@app.route('/12')
+def time12():
+    global time
+    time = '12:00'
+    return get_info()
+
+
+@app.route('/20')
+def time20():
+    global time
+    time = '20:00'
+    return get_info()
+
+
+@app.route('/21')
+def time21():
+    global time
+    time = '21:00'
+    return get_info()
 ########################################################################################################################
 
 @app.route('/index')

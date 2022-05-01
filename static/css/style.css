@@ -13,7 +13,7 @@ body {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 50%;
+  width: 800px;
 }
 img {
 	border: 0;
@@ -21,19 +21,20 @@ img {
 
 ul.hr {
     margin: 0; /* Обнуляем значение отступов */
-    padding: 4px; /* Значение полей */
+    padding: 20px; /* Значение полей */
     text-align: center;
  }
 ul.hr li {
     display: inline; /* Отображать как строчный элемент */
-    margin-right: 5px; /* Отступ слева */
-    border: 1px solid #000; /* Рамка вокруг текста */
-    padding: 3px; /* Поля вокруг текста */
+    margin-right: 23px; /* Отступ слева */
+    border: 2px solid #000; /* Рамка вокруг текста */
+    padding: 5px; /* Поля вокруг текста */
 }
 
 #shed {
 background-color: white;
-	max-width: 960px;
+	max-width: 800px;
+	max-height: 1111px;
 	margin: auto;
 }
 
